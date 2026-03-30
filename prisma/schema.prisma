@@ -1,0 +1,163 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model MagicLinkToken {
+  id        String   @id @default(uuid())
+  email     String
+  token     String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email, token])
+}
+
+model User {
+  id              String          @id @default(uuid())
+  email           String          @unique
+  password        String
+  full_name       String
+  phone           String?
+  role            Role            @default(STUDENT)
+  agreed_to_terms Boolean         @default(false)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  bio             String?
+  avatar          String?
+  mentor_profile  MentorProfile?
+  student_profile StudentProfile?
+  tutor_profile   TutorProfile?
+}
+
+model StudentProfile {
+  id              String       @id @default(uuid())
+  userId          String       @unique
+  education_level String?
+  interests       String[]
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  career_goals    String?
+  industry        String?
+  learning_mode   String?
+  assignments     Assignment[]
+  bookings        Booking[]
+  user            User         @relation(fields: [userId], references: [id])
+}
+
+model TutorProfile {
+  id                   String       @id @default(uuid())
+  userId               String       @unique
+  subjects             String[]
+  experience           String?
+  hourly_rate          Float?
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+  cv_url               String?
+  id_type              String?
+  id_url               String?
+  onboarding_completed Boolean      @default(false)
+  teaching_video_url   String?
+  verification_status  String       @default("PENDING")
+  account_name         String?
+  account_number       String?
+  bank_name            String?
+  assignments          Assignment[]
+  bookings             Booking[]
+  user                 User         @relation(fields: [userId], references: [id])
+}
+
+model MentorProfile {
+  id                   String       @id @default(uuid())
+  userId               String       @unique
+  expertise            String[]
+  industries           String[]
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+  experience           String?
+  cv_url               String?
+  id_type              String?
+  id_url               String?
+  onboarding_completed Boolean      @default(false)
+  teaching_video_url   String?
+  verification_status  String       @default("PENDING")
+  years_of_experience  Int?         @default(0)
+  account_name         String?
+  account_number       String?
+  bank_name            String?
+  assignments          Assignment[]
+  bookings             Booking[]
+  user                 User         @relation(fields: [userId], references: [id])
+}
+
+model Booking {
+  id             String          @id @default(uuid())
+  student_id     String?
+  tutor_id       String?
+  mentor_id      String?
+  type           BookingType
+  startTime      DateTime
+  endTime        DateTime
+  status         BookingStatus   @default(PENDING)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  is_paid        Boolean         @default(false)
+  days_of_week   String[]        @default([])
+  duration_weeks Int?
+  goals          String?
+  subject        String?
+  mentor         MentorProfile?  @relation(fields: [mentor_id], references: [id])
+  student        StudentProfile? @relation(fields: [student_id], references: [id])
+  tutor          TutorProfile?   @relation(fields: [tutor_id], references: [id])
+}
+
+model Assignment {
+  id          String           @id @default(uuid())
+  title       String
+  description String?
+  file_url    String?
+  student_id  String
+  tutor_id    String?
+  mentor_id   String?
+  status      AssignmentStatus @default(PENDING)
+  dueDate     DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  mentor      MentorProfile?   @relation(fields: [mentor_id], references: [id])
+  student     StudentProfile   @relation(fields: [student_id], references: [id])
+  tutor       TutorProfile?    @relation(fields: [tutor_id], references: [id])
+}
+
+enum Role {
+  STUDENT
+  TUTOR
+  MENTOR
+  ADMIN
+  MENTEE
+  STAFF_ONBOARDING
+  STAFF_MATCHING
+}
+
+enum BookingType {
+  TUTORING
+  MENTORSHIP
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  COMPLETED_BY_STUDENT
+  COMPLETED_BY_TUTOR
+  APPROVED_BY_ADMIN
+}
+
+enum AssignmentStatus {
+  PENDING
+  SUBMITTED
+  COMPLETED
+}
