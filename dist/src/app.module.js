@@ -20,6 +20,7 @@ const onboarding_module_1 = require("./onboarding/onboarding.module");
 const admin_module_1 = require("./admin/admin.module");
 const assignments_module_1 = require("./assignments/assignments.module");
 const mentorship_module_1 = require("./mentorship/mentorship.module");
+const exam_enrollment_module_1 = require("./exam-enrollment/exam-enrollment.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -36,6 +37,7 @@ exports.AppModule = AppModule = __decorate([
             admin_module_1.AdminModule,
             assignments_module_1.AssignmentsModule,
             mentorship_module_1.MentorshipModule,
+            exam_enrollment_module_1.ExamEnrollmentModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

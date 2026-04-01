@@ -11,6 +11,7 @@ import { OnboardingModule } from './onboarding/onboarding.module';
 import { AdminModule } from './admin/admin.module';
 import { AssignmentsModule } from './assignments/assignments.module';
 import { MentorshipModule } from './mentorship/mentorship.module';
+import { ExamEnrollmentModule } from './exam-enrollment/exam-enrollment.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { MentorshipModule } from './mentorship/mentorship.module';
     AdminModule,
     AssignmentsModule,
     MentorshipModule,
+    ExamEnrollmentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

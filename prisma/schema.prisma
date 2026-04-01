@@ -178,3 +178,18 @@ model MentorRequest {
   mentor_id  String?
   mentor     MentorProfile? @relation(fields: [mentor_id], references: [id])
 }
+
+model ExamEnrollment {
+  id               String   @id @default(uuid())
+  examId           String
+  examName         String
+  fullName         String
+  email            String
+  phone            String
+  level            String
+  registrationData Json?    // Stores dynamic fields like JAMB profile code, subjects, etc.
+  status           String   @default("PENDING") // PENDING, PAID, REGISTERED
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  userId           String?
+}
