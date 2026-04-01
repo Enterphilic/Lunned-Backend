@@ -44,7 +44,7 @@ const pool = new pg_1.Pool({ connectionString: process.env.DATABASE_URL });
 const adapter = new adapter_pg_1.PrismaPg(pool);
 const prisma = new client_1.PrismaClient({ adapter });
 async function main() {
-    const adminEmail = 'admin@luned.com';
+    const adminEmail = 'admin@luuned.com';
     const hashedPassword = await bcrypt.hash('admin123', 10);
     const admin = await prisma.user.upsert({
         where: { email: adminEmail },
