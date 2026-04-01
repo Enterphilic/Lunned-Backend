@@ -76,6 +76,13 @@ export class AdminController {
     return this.adminService.getUnassignedCount();
   }
 
+  @Get('mentorship-requests')
+  @Roles('ADMIN', 'STAFF_MATCHING')
+  @ApiOperation({ summary: 'Get all pending mentorship requests (leads)' })
+  getMentorshipRequests() {
+    return this.adminService.getPendingMentorRequests();
+  }
+
   @Get('matching/eligible')
   @Roles('ADMIN', 'STAFF_MATCHING')
   @ApiOperation({ summary: 'Get professionals eligible for matching' })
@@ -110,6 +117,13 @@ export class AdminController {
   @ApiOperation({ summary: 'Create a new user/staff directly' })
   create(@Body() data: any) {
     return this.adminService.createUser(data);
+  }
+
+  @Get('bookings/payouts/pending')
+  @Roles('ADMIN')
+  @ApiOperation({ summary: 'Get all completed bookings pending payout approval' })
+  getPendingPayouts() {
+    return this.adminService.getPendingPayouts();
   }
 
   @Post('bookings/:id/approve')

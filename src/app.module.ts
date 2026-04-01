@@ -10,6 +10,7 @@ import { BookingsModule } from './bookings/bookings.module';
 import { OnboardingModule } from './onboarding/onboarding.module';
 import { AdminModule } from './admin/admin.module';
 import { AssignmentsModule } from './assignments/assignments.module';
+import { MentorshipModule } from './mentorship/mentorship.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AssignmentsModule } from './assignments/assignments.module';
     OnboardingModule,
     AdminModule,
     AssignmentsModule,
+    MentorshipModule,
   ],
   controllers: [AppController],
   providers: [AppService],

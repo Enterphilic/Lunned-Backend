@@ -52,13 +52,14 @@ let AdminService = class AdminService {
         this.prisma = prisma;
     }
     async getPlatformStats() {
-        const [totalUsers, totalStudents, totalTutors, totalMentors, pendingVerifications, unassignedCount,] = await Promise.all([
+        const [totalUsers, totalStudents, totalTutors, totalMentors, pendingVerifications, unassignedBookingsCount, pendingMentorRequestsCount,] = await Promise.all([
             this.prisma.user.count(),
             this.prisma.user.count({ where: { role: 'STUDENT' } }),
             this.prisma.user.count({ where: { role: 'TUTOR' } }),
             this.prisma.user.count({ where: { role: 'MENTOR' } }),
             this.getTotalPendingVerifications(),
             this.prisma.booking.count({ where: { tutor_id: null, mentor_id: null } }),
+            this.prisma.mentorRequest.count({ where: { status: 'PENDING' } }),
         ]);
         return {
             totalUsers,
@@ -66,7 +67,7 @@ let AdminService = class AdminService {
             totalTutors,
             totalMentors,
             pendingVerifications,
-            unassignedRequests: unassignedCount,
+            unassignedRequests: unassignedBookingsCount + pendingMentorRequestsCount,
         };
     }
     async getTotalPendingVerifications() {
@@ -185,13 +186,18 @@ let AdminService = class AdminService {
             },
         });
     }
-    async getUnassignedCount() {
-        return this.prisma.booking.count({
-            where: {
-                tutor_id: null,
-                mentor_id: null,
-            },
+    async getPendingMentorRequests() {
+        return this.prisma.mentorRequest.findMany({
+            where: { status: 'PENDING' },
+            orderBy: { createdAt: 'desc' },
         });
+    }
+    async getUnassignedCount() {
+        const [bookingCount, mentorRequestCount] = await Promise.all([
+            this.prisma.booking.count({ where: { tutor_id: null, mentor_id: null } }),
+            this.prisma.mentorRequest.count({ where: { status: 'PENDING' } }),
+        ]);
+        return bookingCount + mentorRequestCount;
     }
     async assignProfessional(bookingId, professionalId, role) {
         const booking = await this.prisma.booking.findUnique({
@@ -282,6 +288,36 @@ let AdminService = class AdminService {
             data: {
                 status: 'APPROVED_BY_ADMIN',
                 is_paid: true
+            },
+        });
+    }
+    async getPendingPayouts() {
+        return this.prisma.booking.findMany({
+            where: {
+                status: {
+                    in: ['COMPLETED', 'COMPLETED_BY_STUDENT', 'COMPLETED_BY_TUTOR']
+                },
+                is_paid: false
+            },
+            include: {
+                student: {
+                    include: {
+                        user: true,
+                    },
+                },
+                tutor: {
+                    include: {
+                        user: true,
+                    },
+                },
+                mentor: {
+                    include: {
+                        user: true,
+                    },
+                },
+            },
+            orderBy: {
+                updatedAt: 'desc',
             },
         });
     }

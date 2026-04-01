@@ -180,4 +180,26 @@ export class UsersService {
       data: { password: hashedPass },
     });
   }
+
+  async findPublicProfile(id: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      include: {
+        tutor_profile: true,
+        mentor_profile: true,
+      },
+    });
+
+    if (!user) return null;
+
+    return {
+      id: user.id,
+      full_name: user.full_name,
+      avatar: user.avatar,
+      role: user.role,
+      bio: user.bio,
+      tutor_profile: user.tutor_profile,
+      mentor_profile: user.mentor_profile,
+    };
+  }
 }

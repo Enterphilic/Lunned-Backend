@@ -300,4 +300,48 @@ export declare class UsersService {
         bio: string | null;
         avatar: string | null;
     }>;
+    findPublicProfile(id: string): Promise<{
+        id: string;
+        full_name: string;
+        avatar: string | null;
+        role: import("@prisma/client").$Enums.Role;
+        bio: string | null;
+        tutor_profile: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            userId: string;
+            subjects: string[];
+            experience: string | null;
+            hourly_rate: number | null;
+            cv_url: string | null;
+            id_type: string | null;
+            id_url: string | null;
+            onboarding_completed: boolean;
+            teaching_video_url: string | null;
+            verification_status: string;
+            account_name: string | null;
+            account_number: string | null;
+            bank_name: string | null;
+        } | null;
+        mentor_profile: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            userId: string;
+            experience: string | null;
+            cv_url: string | null;
+            id_type: string | null;
+            id_url: string | null;
+            onboarding_completed: boolean;
+            teaching_video_url: string | null;
+            verification_status: string;
+            account_name: string | null;
+            account_number: string | null;
+            bank_name: string | null;
+            expertise: string[];
+            industries: string[];
+            years_of_experience: number | null;
+        } | null;
+    } | null>;
 }

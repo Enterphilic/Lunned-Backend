@@ -91,6 +91,7 @@ model MentorProfile {
   assignments          Assignment[]
   bookings             Booking[]
   user                 User         @relation(fields: [userId], references: [id])
+  mentorRequests       MentorRequest[]
 }
 
 model Booking {
@@ -160,4 +161,20 @@ enum AssignmentStatus {
   PENDING
   SUBMITTED
   COMPLETED
+}
+
+model MentorRequest {
+  id         String   @id @default(uuid())
+  fullName   String
+  email      String
+  gender     String?
+  country    String?
+  profession String?
+  message    String?
+  mentorType String? // 'become' or 'find'
+  status     String   @default("PENDING") // PENDING, CONTACTED, CONVERTED, REJECTED
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  mentor_id  String?
+  mentor     MentorProfile? @relation(fields: [mentor_id], references: [id])
 }

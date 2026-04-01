@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Req, Get, Param } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { UpdatePayoutDto } from './dto/update-payout.dto';
@@ -33,5 +33,12 @@ export class UsersController {
   @ApiResponse({ status: 200, description: 'Profile updated.' })
   async updateProfile(@Req() req: any, @Body() dto: UpdateUserDto) {
     return this.usersService.updateProfile(req.user.userId, dto);
+  }
+
+  @Get('public-profile/:id')
+  @ApiOperation({ summary: 'Get a public profile by user ID' })
+  @ApiResponse({ status: 200, description: 'Return the public profile.' })
+  async getPublicProfile(@Param('id') id: string) {
+    return this.usersService.findPublicProfile(id);
   }
 }

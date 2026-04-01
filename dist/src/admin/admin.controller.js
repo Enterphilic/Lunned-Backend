@@ -45,6 +45,9 @@ let AdminController = class AdminController {
     getUnassignedCount() {
         return this.adminService.getUnassignedCount();
     }
+    getMentorshipRequests() {
+        return this.adminService.getPendingMentorRequests();
+    }
     getEligibleProfessionals(subjects, role) {
         const subjectList = subjects ? subjects.split(',') : [];
         return this.adminService.getEligibleProfessionals(subjectList, role);
@@ -57,6 +60,9 @@ let AdminController = class AdminController {
     }
     create(data) {
         return this.adminService.createUser(data);
+    }
+    getPendingPayouts() {
+        return this.adminService.getPendingPayouts();
     }
     approveBooking(id) {
         return this.adminService.approveBooking(id);
@@ -127,6 +133,14 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AdminController.prototype, "getUnassignedCount", null);
 __decorate([
+    (0, common_1.Get)('mentorship-requests'),
+    (0, roles_decorator_1.Roles)('ADMIN', 'STAFF_MATCHING'),
+    (0, swagger_1.ApiOperation)({ summary: 'Get all pending mentorship requests (leads)' }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AdminController.prototype, "getMentorshipRequests", null);
+__decorate([
     (0, common_1.Get)('matching/eligible'),
     (0, roles_decorator_1.Roles)('ADMIN', 'STAFF_MATCHING'),
     (0, swagger_1.ApiOperation)({ summary: 'Get professionals eligible for matching' }),
@@ -166,6 +180,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AdminController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)('bookings/payouts/pending'),
+    (0, roles_decorator_1.Roles)('ADMIN'),
+    (0, swagger_1.ApiOperation)({ summary: 'Get all completed bookings pending payout approval' }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AdminController.prototype, "getPendingPayouts", null);
 __decorate([
     (0, common_1.Post)('bookings/:id/approve'),
     (0, roles_decorator_1.Roles)('ADMIN'),
