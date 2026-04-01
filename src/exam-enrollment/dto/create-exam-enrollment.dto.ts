@@ -22,4 +22,7 @@ export class CreateExamEnrollmentDto {
     @IsOptional()
     @IsObject()
     registrationData?: Record<string, any>;
+    @IsOptional()
+    @IsString()
+    userId?: string;
 }

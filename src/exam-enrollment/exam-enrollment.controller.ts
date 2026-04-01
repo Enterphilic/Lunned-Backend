@@ -16,6 +16,11 @@ export class ExamEnrollmentController {
         return this.examEnrollmentService.findAll();
     }
 
+    @Get('user/:userId')
+    findAllByUserId(@Param('userId') userId: string) {
+        return this.examEnrollmentService.findAllByUserId(userId);
+    }
+
     @Patch(':id/status')
     updateStatus(@Param('id') id: string, @Body('status') status: string) {
         return this.examEnrollmentService.updateStatus(id, status);

@@ -15,13 +15,21 @@ export class ExamEnrollmentService {
                 email: dto.email,
                 phone: dto.phone,
                 level: dto.level,
-                registrationData: dto.registrationData || {},
+                registrationData: (dto.registrationData as any) || {},
+                userId: dto.userId,
             },
         });
     }
 
     async findAll() {
         return this.prisma.examEnrollment.findMany({
+            orderBy: { createdAt: 'desc' },
+        });
+    }
+
+    async findAllByUserId(userId: string) {
+        return this.prisma.examEnrollment.findMany({
+            where: { userId },
             orderBy: { createdAt: 'desc' },
         });
     }
