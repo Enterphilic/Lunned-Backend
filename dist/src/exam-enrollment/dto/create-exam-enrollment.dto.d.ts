@@ -6,4 +6,5 @@ export declare class CreateExamEnrollmentDto {
     phone: string;
     level: string;
     registrationData?: Record<string, any>;
+    userId?: string;
 }

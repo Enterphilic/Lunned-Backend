@@ -27,11 +27,18 @@ let ExamEnrollmentService = class ExamEnrollmentService {
                 phone: dto.phone,
                 level: dto.level,
                 registrationData: dto.registrationData || {},
+                userId: dto.userId,
             },
         });
     }
     async findAll() {
         return this.prisma.examEnrollment.findMany({
+            orderBy: { createdAt: 'desc' },
+        });
+    }
+    async findAllByUserId(userId) {
+        return this.prisma.examEnrollment.findMany({
+            where: { userId },
             orderBy: { createdAt: 'desc' },
         });
     }

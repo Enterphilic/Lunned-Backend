@@ -31,6 +31,20 @@ export declare class ExamEnrollmentController {
         level: string;
         registrationData: import("@prisma/client/runtime/client").JsonValue | null;
     }[]>;
+    findAllByUserId(userId: string): Promise<{
+        id: string;
+        email: string;
+        phone: string;
+        createdAt: Date;
+        updatedAt: Date;
+        userId: string | null;
+        status: string;
+        fullName: string;
+        examId: string;
+        examName: string;
+        level: string;
+        registrationData: import("@prisma/client/runtime/client").JsonValue | null;
+    }[]>;
     updateStatus(id: string, status: string): Promise<{
         id: string;
         email: string;

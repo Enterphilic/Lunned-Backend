@@ -1,4 +1,6 @@
 import { PrismaClient } from '@prisma/client';
+import { Pool } from 'pg';
+import { PrismaPg } from '@prisma/adapter-pg';
 import * as bcrypt from 'bcryptjs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
@@ -6,9 +8,9 @@ import * as dotenv from 'dotenv';
 // Precisely load the .env file from the root
 dotenv.config({ path: path.join(process.cwd(), '.env') });
 
-console.log('Using DATABASE_URL:', process.env.DATABASE_URL ? 'Loaded (masked)' : 'NOT FOUND');
-
-const prisma = new PrismaClient();
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const adapter = new PrismaPg(pool as any);
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
     const adminEmail = 'admin@luned.com';

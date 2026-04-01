@@ -27,6 +27,9 @@ let ExamEnrollmentController = class ExamEnrollmentController {
     findAll() {
         return this.examEnrollmentService.findAll();
     }
+    findAllByUserId(userId) {
+        return this.examEnrollmentService.findAllByUserId(userId);
+    }
     updateStatus(id, status) {
         return this.examEnrollmentService.updateStatus(id, status);
     }
@@ -45,6 +48,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], ExamEnrollmentController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('user/:userId'),
+    __param(0, (0, common_1.Param)('userId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], ExamEnrollmentController.prototype, "findAllByUserId", null);
 __decorate([
     (0, common_1.Patch)(':id/status'),
     __param(0, (0, common_1.Param)('id')),
